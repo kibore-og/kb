@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const { zokou } = require("../framework/zokou");
 
-zokou({ nomCom: "repo", catégorie:"Général", reaction: "💡", nomFichier: __filename }, async (dest, zk, commandeOptions) => {
-  const githubRepo = 'https://api.github.com/repos/kibore-og/kb';
+zokou({ nomCom: "repo", catégorie:"Général", reaction: "😎", nomFichier: __filename }, async (dest, zk, commandeOptions) => {
+  const githubRepo = 'https://github.com/kibore-og/kb';
   const img = 'https://files.catbox.moe/t9jjm9.jpg';
 
   try {
@@ -21,16 +21,26 @@ zokou({ nomCom: "repo", catégorie:"Général", reaction: "💡", nomFichier: __
       const releaseDate = new Date(data.created_at).toLocaleDateString('en-GB');
       const lastUpdateDate = new Date(data.updated_at).toLocaleDateString('en-GB');
 
-      const gitdata = `*𝗛𝗶, 𝐈 𝐚𝐦* *𝐊𝐢𝐛𝐨𝐫𝐞.*\n  
-☀️ *𝗣𝗮𝗶𝗿 𝗰𝗼𝗱* https://rahmani-4.onrender.com
-☀️ *𝗥𝗲𝗽𝗼:* ${data.html_url}
-☀️ *𝗦𝘁𝗮𝗿𝘀:* ${repoInfo.stars}
-☀️ *𝗙𝗼𝗿𝗸𝘀:* ${repoInfo.forks}
-☀️ *𝗥𝗲𝗹𝗲𝗮𝘀𝗲 𝗗𝗮𝘁𝗲:* ${releaseDate}
-☀️ *𝗨𝗽𝗱𝗮𝘁𝗲𝗱 𝗼𝗻:* ${repoInfo.lastUpdate}
-☀️ *𝗢𝘄𝗻𝗲𝗿:* *𝐑𝐚𝐡𝐦𝐚𝐧𝐢*
-__________________________________
-            *𝐊𝐈𝐁𝐎𝐑𝐄 𝐌𝐃*`;
+      const gitdata = ` *𝑯𝒆𝒍𝒍𝒐𝒘 𝒇𝒓𝒊𝒆𝒏𝒅 𝒕𝒉𝒊𝒔 𝒊𝒔 * *𝐊𝐈𝐁𝐎𝐑𝐄 𝐌𝐃.*\n _𝑾𝒆𝒍𝒄𝒐𝒎𝒆 𝒕𝒐 𝒎𝒚 𝒄𝒉𝒂𝒏𝒏𝒆𝒍_ *𝒕𝒉𝒓𝒐𝒖𝒏𝒈*,  https://whatsapp.com/channel/0029Vb3eLRU3QxS5CZHI131x
+
+💀 *𝑅𝐸𝑃𝑂𝑆𝐼𝑇𝑂𝑅𝑌:* ${data.html_url}
+
+🕐 *𝑈𝑃 𝐷𝐴𝑇𝐸𝐷 𝑂𝑁 :* ${repoInfo.lastUpdate}
+⊷━━━━━━☆•∞•☆━━━━━━⊷  
+
+ ╭━━═✺ *𝙺𝙸𝙱𝙾𝚁𝙴* ✺═━━⊷
+ │┌═━━⊷•∞•⊷━━─⊛
+ │┊❁*𝐯𝐢𝐬𝐢𝐭𝐨𝐫:* ${repoInfo.visitors}
+ │┊❁ *𝐬𝐭𝐚𝐫𝐬:* ${repoInfo.stars}
+ │┊❁ *𝐟𝐨𝐫𝐤𝐬:* ${repoInfo.forks}
+ │┊❁ *𝐫𝐞𝐥𝐞𝐬𝐞𝐝 𝐝𝐚𝐭𝐞:* ${releaseDate}
+ │┊❁ *𝐜𝐫𝐞𝐚𝐭𝐨𝐫:* *Rahman*
+ │┊❁ *𝐭𝐡𝐞𝐦:* *𝐪𝐚𝐫𝐭*
+ │┊❁ *𝓌ℯ 𝒶𝓁𝓌𝒶𝓎𝓈 𝓁ℴ𝓋ℯ 𝓎ℴ𝓊❤️*
+ │└═━━⊷•∞•⊷━━─⊛
+ ╰━━━═⊷✺•∞•✺⊷═━━━⊷ 
+ 
+ > Dont Forget Fork And Star Please `;
 
       await zk.sendMessage(dest, { image: { url: img }, caption: gitdata });
     } else {
