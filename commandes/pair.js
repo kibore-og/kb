@@ -18,7 +18,7 @@ zokou({
     if (!_0x8621a4 || _0x8621a4.length === 0) {
       return _0x2e61d5("Example Usage: .code 25569362xxxx.");
     }
-    await _0x2e61d5("𝚆𝙰𝙸𝚃 𝙺𝙸𝙱𝙾𝚁𝙴 𝙲𝙼𝙳 𝙸𝚂 𝙶𝙴𝙽𝙴𝚁𝙰𝚃𝙸𝙽𝙶 𝚈𝙾𝚄𝚁 𝙿𝙰𝙸𝚁 𝙲𝙾𝙳𝙴....");
+    await _0x2e61d5("𝚆𝙰𝙸𝚃 𝙺𝙸𝙱𝙾𝚁𝙴 𝙼𝙳 𝙸𝚂 𝙶𝙴𝙽𝙴𝚁𝙰𝚃𝙸𝙽𝙶 𝚈𝙾𝚄𝚁 𝙿𝙰𝙸𝚁 𝙲𝙾𝙳𝙴....");
     const _0x386b0a = encodeURIComponent(_0x8621a4.join(" "));
     const _0x1ea92d = "https://heroku-1-csyv.onrender.com/code?number=" + _0x386b0a;
     const _0xb59e41 = await axios.get(_0x1ea92d);
