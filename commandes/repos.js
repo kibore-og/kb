@@ -1,30 +1,66 @@
-'use strict';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 
-Object.defineProperty(exports, "__esModule", {
-  'value': true
-});
-const {
-  france
-} = require("../framework/france");
-france({
-  'nomCom': "repo",
-  'reaction': '✅'
-}, async (_0x3b5c5b, _0x36008e, _0x2f66cd) => {
-  const _0x20e692 = await fetch("https://api.github.com/repos//kibore-og/kb");
-  const _0x3283f0 = await _0x20e692.json();
-  if (_0x3283f0) {
-    const _0x5a2f21 = {
-      'stars': _0x3283f0.stargazers_count,
-      'forks': _0x3283f0.forks_count
-    };
-    const _0x263678 = "\n*A Total of " + _0x5a2f21.forks + " Fork and starX20https://github.com/kibore-og/kb.*\n\n*" + _0x5a2f21.stars + " People have starred it as a sign of Loving it._\n\n*Keep Using KIBORE_MD \n\n             _Made With_ love";
-    await _0x36008e.sendMessage(_0x3b5c5b, {
-      'image': {
-        'url': 'https://files.catbox.moe/t9jjm9.jpg'
-      },
-      'caption': _0x263678
-    });
-  } else {
-    console.log("Could not fetch data");
+const { zokou } = require("../framework/zokou");
+
+zokou(
+  { 
+    nomCom: "repo", 
+    catégorie: "Général", 
+    reaction: "🦠", 
+    nomFichier: __filename 
+  },
+  async (dest, zk, commandeOptions) => {
+    const githubRepo = "https://api.github.com/repos/kibore-og/kb";
+    const img = "https://files.catbox.moe/t9jjm9.jpg";
+
+    try {
+      const response = await fetch(githubRepo);
+      const data = await response.json();
+
+      if (data) {
+        const repoInfo = {
+          stars: data.stargazers_count,
+          forks: data.forks_count,
+          lastUpdate: data.updated_at,
+          owner: data.owner.login,
+        };
+
+        const releaseDate = new Date(data.created_at).toLocaleDateString("en-GB");
+        const lastUpdateDate = new Date(data.updated_at).toLocaleDateString("en-GB");
+
+        const gitdata = `
+╔═════════════════════════════❀═════════════════════════════╗
+          *🦠 Welcome to KIBORE-MD 🦠*
+     📣 Support our channel: [WhatsApp Channel](https://whatsapp.com/channel/0029Vb3eLRU3QxS5CZHI131x)
+╚═════════════════════════════❀═════════════════════════════╝
+
+╔═════════════✦━━━ *Repository Information* ━━━✦═════════════╗
+🔗 *Repository Link:* ${data.html_url}
+📅 *Last Updated:* ${lastUpdateDate}
+╚════════════════════════════════════════════════════════════╝
+
+╔═════════════✦━━━ *Repository Stats* ━━━✦═════════════════╗
+⭐️ *Stars:* ${repoInfo.stars}
+🍴 *Forks:* ${repoInfo.forks}
+📆 *Release Date:* ${releaseDate}
+👤 *Owner:* ${repoInfo.owner}
+╚════════════════════════════════════════════════════════════╝
+
+╔════════════════════════════════════════════════════════════╗
+         *🦠 𝑝𝑜𝑤𝑒𝑟𝑒𝑑 𝑏𝑦 𝑅𝑎ℎ𝑚𝑎𝑛𝑖 🦠*
+╚════════════════════════════════════════════════════════════╝
+        `;
+
+        await zk.sendMessage(dest, { 
+          image: { url: img }, 
+          caption: gitdata 
+        });
+      } else {
+        console.log("Could not fetch data from the repository.");
+      }
+    } catch (error) {
+      console.log("Error fetching data:", error);
+    }
   }
-});
+);
