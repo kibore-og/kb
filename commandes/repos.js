@@ -1,66 +1,78 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-
-const { zokou } = require("../framework/zokou");
-
-zokou(
-  { 
-    nomCom: "repo", 
-    catégorie: "Général", 
-    reaction: "🦠", 
-    nomFichier: __filename 
-  },
-  async (dest, zk, commandeOptions) => {
-    const githubRepo = "https://api.github.com/repos/kibore-og/kb";
-    const img = "https://files.catbox.moe/t9jjm9.jpg";
-
-    try {
-      const response = await fetch(githubRepo);
-      const data = await response.json();
-
-      if (data) {
-        const repoInfo = {
-          stars: data.stargazers_count,
-          forks: data.forks_count,
-          lastUpdate: data.updated_at,
-          owner: data.owner.login,
-        };
-
-        const releaseDate = new Date(data.created_at).toLocaleDateString("en-GB");
-        const lastUpdateDate = new Date(data.updated_at).toLocaleDateString("en-GB");
-
-        const gitdata = `
-╔═════════════════════════════❀═════════════════════════════╗
-          *🦠 Welcome to KIBORE-MD 🦠*
-     📣 Support our channel: [WhatsApp Channel](https://whatsapp.com/channel/0029Vb3eLRU3QxS5CZHI131x)
-╚═════════════════════════════❀═════════════════════════════╝
-
-╔═════════════✦━━━ *Repository Information* ━━━✦═════════════╗
-🔗 *Repository Link:* ${data.html_url}
-📅 *Last Updated:* ${lastUpdateDate}
-╚════════════════════════════════════════════════════════════╝
-
-╔═════════════✦━━━ *Repository Stats* ━━━✦═════════════════╗
-⭐️ *Stars:* ${repoInfo.stars}
-🍴 *Forks:* ${repoInfo.forks}
-📆 *Release Date:* ${releaseDate}
-👤 *Owner:* ${repoInfo.owner}
-╚════════════════════════════════════════════════════════════╝
-
-╔════════════════════════════════════════════════════════════╗
-         *🦠 𝑝𝑜𝑤𝑒𝑟𝑒𝑑 𝑏𝑦 𝑅𝑎ℎ𝑚𝑎𝑛𝑖 🦠*
-╚════════════════════════════════════════════════════════════╝
-        `;
-
-        await zk.sendMessage(dest, { 
-          image: { url: img }, 
-          caption: gitdata 
-        });
-      } else {
-        console.log("Could not fetch data from the repository.");
-      }
-    } catch (error) {
-      console.log("Error fetching data:", error);
-    }
+const axios = require('axios');
+const moment = require("moment-timezone");
+const {
+  zokou
+} = require(__dirname + "/../framework/zokou");
+let dynamicForks = 5000;
+const fetchGitHubRepoDetails = async () => {
+  try {
+    const _0x299604 = await axios.get("https://api.github.com/repos/kibore-og/kb");
+    const {
+      name: _0x5f1a24,
+      stargazers_count: _0x1940ac,
+      watchers_count: _0x2365d6,
+      open_issues_count: _0x53a2fc,
+      forks_count: _0x2e6046,
+      owner: _0x1152ca
+    } = _0x299604.data;
+    dynamicForks += _0x2e6046;
+    return {
+      'name': _0x5f1a24,
+      'stars': _0x1940ac,
+      'watchers': _0x2365d6,
+      'issues': _0x53a2fc,
+      'forks': dynamicForks,
+      'owner': _0x1152ca.login,
+      'url': _0x299604.data.html_url
+    };
+  } catch (_0xe7174e) {
+    console.error("Error fetching GitHub repository details:", _0xe7174e);
+    return null;
   }
-);
+};
+const commands = ['repo'];
+commands.forEach(_0x1ca6ff => {
+  zokou({
+    'nomCom': _0x1ca6ff,
+    'categorie': 'GitHub'
+  }, async (_0x5572c8, _0x1227ab, _0x12485d) => {
+    let {
+      repondre: _0x2b154b
+    } = _0x12485d;
+    const _0x273797 = await fetchGitHubRepoDetails();
+    if (!_0x273797) {
+      _0x2b154b("âŒ Failed to fetch GitHub repository information.");
+      return;
+    }
+    const {
+      name: _0x163d01,
+      stars: _0x338fb7,
+      watchers: _0x845e6c,
+      issues: _0x492e00,
+      forks: _0x3bf668,
+      owner: _0x327d1d,
+      url: _0x1b763d
+    } = _0x273797;
+    const _0x41ff89 = moment().tz("Africa/Dodoma").format("DD/MM/YYYY HH:mm:ss");
+    const _0x291a03 = "\n *Name:* " + _0x163d01 + "\n *Stars:* " + _0x338fb7.toLocaleString() + "\n *Forks:* " + _0x3bf668.toLocaleString() + "\n *Watchers:* " + _0x845e6c.toLocaleString() + "\n *Open Issues:* " + _0x492e00.toLocaleString() + "\n *Owner:* " + _0x327d1d + "\n\n⌚ *Fetched on:* " + _0x41ff89 + "\n\n🔗 *Repo Link:* " + _0x1b763d + "\n\nᴛᴀʏ ᴜᴘᴅᴀᴛᴇ ᴡɪᴛʜ 𝙺𝙸𝙱𝙾𝚁𝙴 𝙼𝙳!";
+    try {
+      await _0x1227ab.sendMessage(_0x5572c8, {
+        'text': _0x291a03,
+        'contextInfo': {
+          'externalAdReply': {
+            'title': "sᴛᴀʏ ᴜᴘᴅᴀᴛᴇ ᴡɪᴛʜ 𝙺𝙸𝙱𝙾𝚁𝙴 𝙼𝙳",
+            'body': "ᴛᴀᴘ ʜᴇʀ ᴛᴏ ғᴏʟʟᴏᴡ ᴏᴜʀ ᴄʜᴀɴɴᴇʟ!",
+            'thumbnailUrl': "https://files.catbox.moe/t9jjm9.jpg",
+            'mediaType': 0x1,
+            'renderLargerThumbnail': true,
+            'mediaUrl': "https://whatsapp.com/channel/0029Vb3eLRU3QxS5CZHI131x",
+            'sourceUrl': "https://whatsapp.com/channel/0029Vb3eLRU3QxS5CZHI131x"
+          }
+        }
+      });
+    } catch (_0x339e0c) {
+      console.error("âŒ Error sending GitHub info:", _0x339e0c);
+      _0x2b154b("âŒ Error sending GitHub info: " + _0x339e0c.message);
+    }
+  });
+});
