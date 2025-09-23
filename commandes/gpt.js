@@ -1,44 +1,52 @@
 const { zokou } = require('../framework/zokou');
-const traduire = require("../framework/traduction") ;
 const { default: axios } = require('axios');
-//const conf = require('../set');
 
+if (!global.userChats) global.userChats = {};
 
+zokou({ nomCom: "gpt", reaction: "😎", categorie: "ai" }, async (dest, zk, commandeOptions) => {
+    const { arg, ms } = commandeOptions;
+    const sender = ms.sender;
+    const from = dest;
 
+    try {
+        if (!arg || arg.length === 0) {
+            return await zk.sendMessage(from, { text: "> 𝒀𝑬𝑺 𝑩𝑶𝑺𝑺 𝑨𝑴 𝑳𝑰𝑺𝑻𝑬𝑵𝑰𝑵𝑮 𝑻𝑶 𝒀𝑶𝑼 😎 ." }, { quoted: ms });
+        }
 
-zokou({nomCom:"rahmani",reaction:"🤖",categorie:"IA"},async(dest,zk,commandeOptions)=>{
+        const text = arg.join(" ");
 
-  const {repondre,ms,arg}=commandeOptions;
-  
-    if(!arg || !arg[0])
-    {return repondre("yes boss am listening to you....")}
-    //var quest = arg.join(' ');
-  try{
-    
-    
-const message = await traduire(arg.join(' '),{ to : 'en'});
- console.log(message)
-fetch(`https://api.giftedtech.web.id/api/ai/gpt?apikey=gifted&q=Whats+Your+Model=${message}`)
-.then(response => response.json())
-.then(data => {
-  const botResponse = data.cnt;
-  console.log(botResponse);
+        // Initialize user chat history
+        if (!global.userChats[sender]) global.userChats[sender] = [];
+        global.userChats[sender].push(`User: ${text}`);
 
-  traduire(botResponse, { to: 'en' })
-    .then(translatedResponse => {
-      repondre(translatedResponse);
-    })
-    .catch(error => {
-      console.error('Error when translating into French :', error);
-      repondre('Error when translating into French');
-    });
-})
-.catch(error => {
-  console.error('Error requesting BrainShop :', error);
-  repondre('Error requesting BrainShop');
+        // Keep only last 15 messages
+        if (global.userChats[sender].length > 15) global.userChats[sender].shift();
+
+        const history = global.userChats[sender].join("\n");
+
+        const prompt = `
+You are Kibore xmd Ai, a friendly and intelligent WhatsApp bot. Chat naturally without asking repetitive questions.
+
+### Chat History:
+${history}
+`;
+
+        // Call your API
+        const { data } = await axios.get("https://HansTzTech-api.hf.space/ai/logic", {
+            params: { q: text, logic: prompt }
+        });
+
+        // Extract bot response
+        const botResponse = data?.result || "⚠️ Sorry, I couldn't understand your question.";
+
+        // Save bot reply in history
+        global.userChats[sender].push(`Bot: ${botResponse}`);
+
+        // Send plain reply
+        await zk.sendMessage(from, { text: botResponse }, { quoted: ms });
+
+    } catch (err) {
+        console.error("❌ GPT Error:", err);
+        await zk.sendMessage(from, { text: "❌ An error occurred: " + err.message }, { quoted: ms });
+    }
 });
-
-  }catch(e){ repondre("oops an error : "+e)}
-    
-  
-  });  
